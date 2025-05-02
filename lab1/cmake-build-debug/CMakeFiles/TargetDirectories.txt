@@ -1,0 +1,7 @@
+C:/Users/w1nzeen/Desktop/ІПЗ 1 курс/ІПЗ 2 семестр 2024-25/Дискретка/lab1/cmake-build-debug/CMakeFiles/lab1.dir
+C:/Users/w1nzeen/Desktop/ІПЗ 1 курс/ІПЗ 2 семестр 2024-25/Дискретка/lab1/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/w1nzeen/Desktop/ІПЗ 1 курс/ІПЗ 2 семестр 2024-25/Дискретка/lab1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/w1nzeen/Desktop/ІПЗ 1 курс/ІПЗ 2 семестр 2024-25/Дискретка/lab1/cmake-build-debug/CMakeFiles/list_install_components.dir
+C:/Users/w1nzeen/Desktop/ІПЗ 1 курс/ІПЗ 2 семестр 2024-25/Дискретка/lab1/cmake-build-debug/CMakeFiles/install.dir
+C:/Users/w1nzeen/Desktop/ІПЗ 1 курс/ІПЗ 2 семестр 2024-25/Дискретка/lab1/cmake-build-debug/CMakeFiles/install/local.dir
+C:/Users/w1nzeen/Desktop/ІПЗ 1 курс/ІПЗ 2 семестр 2024-25/Дискретка/lab1/cmake-build-debug/CMakeFiles/install/strip.dir
