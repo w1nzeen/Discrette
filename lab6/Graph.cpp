@@ -1,224 +1,175 @@
 #include "Graph.h"
 
-// Реалізація методу empty для класу List
 bool List::empty() {
-    return first == NULL; // Повертає true, якщо список порожній
-}
-
-// Реалізація класу stacks
-stacks::stacks() {
-    first = nullptr;
-    last = nullptr;
-}
-
-stacks::~stacks() {
-    // Очищаємо всі вузли
-    while (!empty()) {
-        Item* temp = first;
-        first = temp->next;
-        delete temp;
-    }
-}
-
-void stacks::push(int data) {
-    Item* temp = new Item;
-    temp->data = data;
-    temp->next = first;
-    temp->previous = nullptr;
-    first = temp;
-}
-
-int stacks::pop() {
-    if (empty()) {
-        throw runtime_error("Stack is empty"); // Виняток для порожнього стека
-    }
-    Item* temp = first;
-    first = temp->next;
-    int p = temp->data;
-    delete temp;
-    return p;
-}
-
-// Реалізація класу queuee
-queuee::queuee() {
-    first = nullptr;
-    last = nullptr;
-}
-
-queuee::~queuee() {
-    // Очищаємо всі вузли
-    while (!empty()) {
-        Item* temp = first;
-        first = temp->next;
-        delete temp;
-    }
+    return first == NULL;
 }
 
 void queuee::enqueue(int data) {
     Item* temp = new Item;
     temp->data = data;
-    temp->next = nullptr;
-    temp->previous = nullptr;
-    if (empty()) {
+    temp->next = NULL;
+    if (empty())
         first = temp;
-    } else {
+    else
         last->next = temp;
-    }
     last = temp;
 }
 
 int queuee::dequeue() {
-    if (empty()) {
-        throw runtime_error("Queue is empty"); // Виняток для порожньої черги
-    }
+    if (empty()) return NULL;
     Item* temp = first;
     first = temp->next;
-    if (!first) last = nullptr;
     int p = temp->data;
     delete temp;
     return p;
 }
 
-// Реалізація класу Graph
-Graph::Graph() {
-    numOfVertex = 0;
-    visited = nullptr;
-    pos = nullptr;
-    from = nullptr;
-    to = nullptr;
-    dfsnum = 0;
-    _BFS = 0;
-    counter = 0;
-}
-
-Graph::~Graph() {
-    // Звільняємо пам’ять
-    delete[] visited;
-    delete[] pos;
-    delete[] from;
-    delete[] to;
-}
-
 void Graph::AddEdge(vector<vector<int>> AdjMatrix, int vertex) {
     numOfVertex = vertex;
+
     graph.clear();
-    // Копіюємо матрицю суміжності
-    for (int i = 0; i < vertex; ++i) {
-        graph.push_back(AdjMatrix[i]);
-    }
-    // Виділяємо та ініціалізуємо масиви
-    delete[] visited;
-    delete[] pos;
-    delete[] from;
-    delete[] to;
-    visited = new bool[numOfVertex]();
-    pos = new int[numOfVertex]();
-    from = new int[numOfVertex]();
-    to = new int[numOfVertex]();
+    graph = AdjMatrix;
+
+    // виділяємо пам’ять один раз
+    visited = new bool[numOfVertex];
+    pos = new int[numOfVertex];
+    from = new int[numOfVertex];
+    to = new int[numOfVertex];
 }
 
 void Graph::DFS(int start) {
-    // Скидаємо змінні
     dfsnum = 0;
     counter = 0;
-    for (int i = 0; i < numOfVertex; ++i) {
-        visited[i] = false;
-        pos[i] = 0;
-        from[i] = 0;
-        to[i] = 0;
-    }
-    stacks s;
+
+    delete[] visited;
+    delete[] pos;
+    delete[] from;
+    delete[] to;
+
+    visited = new bool[numOfVertex];
+    pos = new int[numOfVertex];
+    from = new int[numOfVertex];
+    to = new int[numOfVertex];
+
+    for (int i = 0; i < numOfVertex; ++i) visited[i] = false;
+
+    stack<int> s;
     visited[start] = true;
     pos[start] = ++dfsnum;
     cout << "V" << start + 1 << "\t" << pos[start] << "\n";
     s.push(start);
+
     while (!s.empty()) {
-        int x = s.pop();
-        // Досліджуємо всіх сусідів
+        int x = s.top();
+        bool found = false;
+
         for (int j = 0; j < numOfVertex; ++j) {
             if (graph[x][j] == 1 && !visited[j]) {
                 visited[j] = true;
                 pos[j] = ++dfsnum;
                 cout << "V" << j + 1 << "\t" << pos[j] << "\n";
+                s.push(j);
                 from[counter] = x;
                 to[counter] = j;
                 counter++;
-                s.push(j);
+                found = true;
+                break;
             }
         }
+
+        if (!found) s.pop();
     }
-    // Виводимо ребра
-    cout << "\nPairs of vertices\n";
-    for (int i = 0; i < counter; ++i) {
+
+    cout << "\nШлях\n";
+    for (int i = 0; i < counter; ++i)
         cout << "V" << from[i] + 1 << " -> V" << to[i] + 1 << "\n";
-    }
+
+    counter = 0;
+}
+
+void Graph::start_rDFS(int start) {
+    dfsnum = 0;
+    counter = 0;
+
+    delete[] visited;
+    delete[] pos;
+    delete[] from;
+    delete[] to;
+
+    visited = new bool[numOfVertex];
+    pos = new int[numOfVertex];
+    from = new int[numOfVertex];
+    to = new int[numOfVertex];
+
+    for (int i = 0; i < numOfVertex; ++i)
+        visited[i] = false;
+
+    cout << "(V)\trDFS\n";
+    rDFS(start);
+
+    cout << "\nШлях\n";
+    for (int i = 0; i < counter; ++i)
+        cout << "V" << from[i] + 1 << " -> V" << to[i] + 1 << "\n";
+
+    counter = 0;
 }
 
 void Graph::rDFS(int start) {
-    // Скидаємо змінні
-    dfsnum = 0;
-    counter = 0;
-    for (int i = 0; i < numOfVertex; ++i) {
-        visited[i] = false;
-        pos[i] = 0;
-        from[i] = 0;
-        to[i] = 0;
-    }
-    rDFSHelper(start);
-    // Виводимо ребра
-    cout << "\nPairs of vertices\n";
-    for (int i = 0; i < counter; ++i) {
-        cout << "V" << from[i] + 1 << " -> V" << to[i] + 1 << "\n";
-    }
-}
-
-void Graph::rDFSHelper(int start) {
     visited[start] = true;
     pos[start] = ++dfsnum;
     cout << "V" << start + 1 << "\t" << pos[start] << "\n";
-    for (int j = 0; j < numOfVertex; ++j) {
-        if (graph[start][j] == 1 && !visited[j]) {
+
+    for (int i = 0; i < numOfVertex; ++i) {
+        if (graph[start][i] == 1 && !visited[i]) {
             from[counter] = start;
-            to[counter] = j;
+            to[counter] = i;
             counter++;
-            rDFSHelper(j);
+            rDFS(i);
         }
     }
 }
 
 void Graph::BFS(int start) {
-    // Скидаємо змінні
-    _BFS = 0;
+    _BFS = 1;
     counter = 0;
-    for (int i = 0; i < numOfVertex; ++i) {
+
+    delete[] visited;
+    delete[] pos;
+    delete[] from;
+    delete[] to;
+
+    visited = new bool[numOfVertex];
+    pos = new int[numOfVertex];
+    from = new int[numOfVertex];
+    to = new int[numOfVertex];
+
+    for (int i = 0; i < numOfVertex; ++i)
         visited[i] = false;
-        pos[i] = 0;
-        from[i] = 0;
-        to[i] = 0;
-    }
+
     queue<int> q;
     visited[start] = true;
-    pos[start] = ++_BFS;
+    pos[start] = _BFS;
     cout << "V" << start + 1 << "\t" << pos[start] << "\n";
     q.push(start);
+
     while (!q.empty()) {
-        int x = q.front();
-        q.pop();
+        int x = q.front(); q.pop();
         for (int j = 0; j < numOfVertex; ++j) {
             if (graph[x][j] == 1 && !visited[j]) {
+                from[counter] = x;
+                to[counter] = j;
+                q.push(j);
                 visited[j] = true;
                 pos[j] = ++_BFS;
                 cout << "V" << j + 1 << "\t" << pos[j] << "\n";
-                from[counter] = x;
-                to[counter] = j;
                 counter++;
-                q.push(j);
             }
         }
     }
-    // Виводимо ребра
-    cout << "\nPairs of vertices\n";
-    for (int i = 0; i < counter; ++i) {
+
+    cout << "\nШлях\n";
+    for (int i = 0; i < counter; ++i)
         cout << "V" << from[i] + 1 << " -> V" << to[i] + 1 << "\n";
-    }
+
+    counter = 0;
 }

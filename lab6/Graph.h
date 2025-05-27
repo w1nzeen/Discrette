@@ -1,64 +1,90 @@
-#pragma once
+#ifndef LAB6DISC_GRAPH_H
+#define LAB6DISC_GRAPH_H
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <stack>
+#include <cmath>
 #include <queue>
-#include <stdexcept>
-#include <Windows.h>
+#include <windows.h>
 #pragma execution_character_set("utf-8")
 
 using namespace std;
 
-// Структура для елементів зв’язного списку (використовується для стека та черги)
-struct Item {
-    int data;          // Значення вершини
-    Item* next;        // Вказівник на наступний елемент
-    Item* previous;    // Не використовується
+struct Item
+{
+    int data;
+    Item* next;
+    Item* previous;
 };
 
-// Базовий клас для зв’язного списку
 class List {
 public:
-    Item* first, *last; // Вказівники на початок і кінець
-    bool empty();       // Перевіряє, чи список порожній
+    Item* first, * last;
+    bool empty();
 };
 
-// Клас стека
-class stacks : public List {
+class stacks : public List
+{
 public:
-    stacks();           // Конструктор
-    ~stacks();          // Деструктор для очищення пам’яті
-    void push(int data); // Додає елемент на вершину
-    int pop();          // Видаляє та повертає верхній елемент
+    stacks() { first = NULL; }
+    ~stacks() {}
+    void push(int data) {
+        Item* temp = new Item;
+        temp->data = data;
+        temp->next = first;
+        first = temp;
+    }
+    int pop() {
+        if (empty())
+        {
+            return NULL;
+        }
+        else
+        {
+            Item* temp = first;
+            first = temp->next;
+            int p = temp->data;
+            delete temp;
+            return p;
+        }
+    }
 };
 
-// Клас черги
-class queuee : public List {
+class queuee : public List
+{
 public:
-    queuee();           // Конструктор
-    ~queuee();          // Деструктор для очищення пам’яті
-    void enqueue(int data); // Додає елемент у кінець
-    int dequeue();      // Видаляє та повертає перший елемент
+    queuee() { last = NULL; }
+    ~queuee(){}
+    void enqueue(int data);
+    int dequeue();
 };
 
-// Клас для роботи з графом
-class Graph {
-    vector<vector<int>> graph; // Матриця суміжності
-    int dfsnum;               // Лічильник для номерів DFS
-    int _BFS;                 // Лічильник для номерів BFS
-    int counter;              // Лічильник ребер
-    int numOfVertex;          // Кількість вершин
-    bool* visited;            // Масив відвіданих вершин
-    int* pos;                 // Масив номерів обходу
-    int* from;                // Початкові вершини ребер
-    int* to;                  // Кінцеві вершини ребер
+class Graph
+{
+    vector<vector<int>> graph;
+
+    int dfsnum = 0;
+    int _BFS;
+    int counter = 0;
+    int numOfVertex;
+    bool* visited = nullptr;
+    int* pos = nullptr;
+    int* from = nullptr;
+    int* to = nullptr;
 public:
-    Graph();                  // Конструктор
-    ~Graph();                 // Деструктор
-    void AddEdge(vector<vector<int>> AdjMatrix, int vertex); // Ініціалізує граф
-    void DFS(int start);      // Ітеративний пошук у глибину
-    void rDFS(int start);     // Рекурсивний пошук у глибину
-    void BFS(int start);      // Пошук у ширину
-private:
-    void rDFSHelper(int start); // Допоміжна функція для rDFS
+    Graph() {}
+    ~Graph() {
+        delete[] visited;
+        delete[] pos;
+        delete[] from;
+        delete[] to;
+    }
+    void AddEdge(vector<vector<int>> AdjMatrix, int vertex);
+    void DFS(int start);
+    void rDFS(int start);
+    void start_rDFS(int start); // <== додано
+    void BFS(int start);
 };
+
+#endif //LAB6DISC_GRAPH_H
