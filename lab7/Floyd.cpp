@@ -9,7 +9,7 @@ void printMatrix(const vector<vector<int>>& matrix, const string& label) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             if (matrix[i][j] == INF)
-                cout << setw(6) << "∞";
+                cout << setw(6) << "INF";
             else
                 cout << setw(6) << matrix[i][j];
         }

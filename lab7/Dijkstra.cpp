@@ -5,7 +5,7 @@ using namespace std;
 void printPath(const vector<int>& parent, int v) {
     if (v == -1) return;
     printPath(parent, parent[v]);
-    cout << v << " ";
+    cout << "V" << v << " ";
 }
 
 void dijkstra(const vector<vector<int>>& adjMatrix, int startVertex, vector<int>& dist, vector<int>& parent) {
