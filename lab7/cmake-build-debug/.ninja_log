@@ -1,0 +1,5 @@
+# ninja log v6
+4	488	7700670108564753	CMakeFiles/lab7.dir/Dijkstra.cpp.obj	a77693890364949c
+14	514	7700670108670183	CMakeFiles/lab7.dir/main.cpp.obj	6eed859b4c1e214
+9	630	7700670108627307	CMakeFiles/lab7.dir/Floyd.cpp.obj	a3bfeadaf24b5751
+630	752	7700670114835854	lab7.exe	d942180b9a1638d8
